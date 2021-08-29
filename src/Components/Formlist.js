@@ -15,7 +15,7 @@ import "../style.css";
 
 
 //localStorage.removeItem('rows');
-localStorage.removeItem('submittedata');
+//localStorage.removeItem('submittedata');
 let rows = localStorage.getItem('rows');
 let submittedata = localStorage.getItem('submittedata');
 

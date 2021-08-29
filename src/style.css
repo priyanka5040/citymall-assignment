@@ -1,0 +1,15 @@
+.btns{
+    margin : 10px;
+}
+.btns button{
+    padding:10px;
+    margin-left : 50px;
+    background-color:white;
+    border-style: none;
+    border:1px solid rgb(170, 170, 170);
+    color:rgb(92, 91, 91);
+}
+.btns button:hover{
+    color:rgb(153, 209, 228);
+    border:1px solid rgb(153, 209, 228);
+}

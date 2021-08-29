@@ -2,11 +2,20 @@ import React from 'react';
 import {AgGridReact} from 'ag-grid-react';
 import { useState } from "react";
 import SubmittedTable from "./SubmittedTable";
+import 'date-fns';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import "../style.css";
+
+
 //localStorage.removeItem('rows');
-//localStorage.removeItem('submittedata');
+localStorage.removeItem('submittedata');
 let rows = localStorage.getItem('rows');
 let submittedata = localStorage.getItem('submittedata');
 
@@ -18,15 +27,104 @@ const Formlist = () => {
     let [selected, setSelected] = useState([]);
     let [submitted, setSubmitted] = useState(submittedata);
     let [isSubmit, setIsSubmit] = useState(false);
+
+    const useStyles = makeStyles((theme) => ({
+        container: {
+          display: 'flex',
+          flexWrap: 'wrap',
+        },
+        textField: {
+          marginLeft: theme.spacing(1),
+          marginRight: theme.spacing(1),
+          width: 200,
+        },
+        formControl: {
+            minWidth: 120,
+          },
+          
+      }));
+      const classes = useStyles();
     
 
     let columns = [
         {headerName : 'Id', field:"Id", checkboxSelection:true},
         {headerName : 'Name', field:"Name"},
         {headerName : 'Email', field:"Email"},
-        {headerName : 'Gender', field:"Gender"},
-        {headerName : 'DOB', field:"DOB"},
-        {headerName : 'Country', field:"Country"},
+        {headerName : 'Gender', field:"Gender",
+
+        cellRendererFramework : (params)=>{
+            return<FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Gender"
+              value = {rowDefs[params.rowIndex] ? rowDefs[params.rowIndex].Gender : 'Gender'}
+              onChange={(e)=>{
+                if(rowDefs[params.rowIndex]){
+                    let newR = rowDefs;
+                    newR[params.rowIndex].Gender = e.target.value;
+                    setRowDefs(newR);
+                }
+              }}
+            >
+              
+              <MenuItem value={'Gender'}>Gender</MenuItem>
+              <MenuItem value={'Male'}>Male</MenuItem>
+              <MenuItem value={'Female'}>Female</MenuItem>
+            </Select>
+          </FormControl>
+        }
+    },
+        {headerName : 'DOB', field:"DOB",
+         cellRendererFramework : (params)=>{
+             //console.log(rowDefs);
+            return <form className={classes.container} noValidate>
+                        <TextField
+                        id="datetime-local"
+                        type="date"
+                        
+                        className={classes.textField}
+                        value = {rowDefs[params.rowIndex] ? rowDefs[params.rowIndex].DOB : 'DOB'}
+
+                        onChange={(e)=>{
+                            
+                            if(rowDefs[params.rowIndex]){
+                                let newR = rowDefs;
+                                newR[params.rowIndex].DOB = e.target.value;
+                                setRowDefs(newR);
+                            }
+                        }}
+                        
+                        />
+                    </form>
+         }
+        },
+        {headerName : 'Country', field:"Country",
+        cellRendererFramework : (params)=>{
+            return<FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel id="demo-simple-select-outlined-label">Country</InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Gender"
+              value = {rowDefs[params.rowIndex] ? rowDefs[params.rowIndex].Country : 'Country'}
+              onChange={(e)=>{
+                if(rowDefs[params.rowIndex]){
+                    let newR = rowDefs;
+                    newR[params.rowIndex].Country = e.target.value;
+                    setRowDefs(newR);
+                }
+              }}
+            >
+              <MenuItem value={'Country'}>Country</MenuItem>
+              <MenuItem value={'Indonesia'}>Indonesia</MenuItem>
+              <MenuItem value={'Russia'}>Russia</MenuItem>
+              <MenuItem value={'Ukraine'}>Ukraine</MenuItem>
+            </Select>
+          </FormControl>
+        }
+    },
         {headerName : 'City', field:"City"},
         {headerName: "Action",field:"Id",
             cellRendererFramework:(params)=><div>
